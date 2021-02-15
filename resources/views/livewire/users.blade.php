@@ -8,8 +8,58 @@
                         <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                     </svg>
                 </button>
-            </div>         
+            </div>
+            <div class="mt-2">
+                <x-jet-button wire:click="confirmUserAdd" wire:loading.attr="disabled">
+                    {{ __('Add User') }}
+                </x-jet-button>
+            </div>
         </div>
+
+        <!--Add User Modal -->
+        <x-jet-dialog-modal wire:model="confirmingUserAdd">
+            <x-slot name="title">
+                {{ __('Add User') }}
+            </x-slot>
+
+            <x-slot name="content">
+            <div>
+                <x-jet-label for="name" value="{{ __('Name') }}" />
+                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required wire:model.defer="name" />
+                <x-jet-input-error for="name" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="email" value="{{ __('Email') }}" />
+                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required wire:model.defer="email"/>
+                <x-jet-input-error for="email" class="mt-2" />     
+            </div>
+
+            <div class="mt-4">
+           
+                <x-jet-label for="role" value="{{ __('Role') }}" />
+                <select id="role" class="form-multiselect block mt-1 w-full" multiple name="role" required wire:model.defer="role_id" />
+                    <option value="1"> Admin </option>
+                    <option value="2"> Vendor </option>
+                    <option value="3"> Technician </option>
+                </select>
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mt-3"> You may select multiple roles</span>
+                <x-jet-input-error for="role_id" class="mt-2" />    
+            </div>            
+            </x-slot>
+
+            <x-slot name="footer">
+
+                <x-jet-button class="ml-2" wire:click="UserAdd()" wire:loading.attr="disabled">
+                    {{ __('Add User') }}
+                </x-jet-button>
+                <x-jet-secondary-button wire:click="$set('confirmingUserAdd', false)" wire:loading.attr="disabled">
+                    {{ __('Nevermind') }}
+                </x-jet-secondary-button>
+
+            </x-slot>
+        </x-jet-dialog-modal>
+
 
         <div class="mt-2">
             <table class="border-collapse w-full">
@@ -69,7 +119,7 @@
             </table>
         </div>
         <div class="mt-4">
-        {{ $users->links() }}
-    </div>
+            {{ $users->links() }}
+        </div>
     </div>
 </div>

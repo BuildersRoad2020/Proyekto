@@ -7,9 +7,6 @@ use App\Models\Contractors;
 use Livewire\WithPagination;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-/* use App\Models\User;
-use App\Models\RoleUser; */
-
 class Contractor extends Component
 {
     use WithPagination;
