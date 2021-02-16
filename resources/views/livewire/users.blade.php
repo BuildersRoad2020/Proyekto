@@ -23,29 +23,29 @@
             </x-slot>
 
             <x-slot name="content">
-            <div>
-                <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required wire:model.defer="name" />
-                <x-jet-input-error for="name" class="mt-2" />
-            </div>
+                <div>
+                    <x-jet-label for="name" value="{{ __('Name') }}" />
+                    <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required wire:model.defer="name" />
+                    <x-jet-input-error for="name" class="mt-2" />
+                </div>
 
-            <div class="mt-4">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required wire:model.defer="email"/>
-                <x-jet-input-error for="email" class="mt-2" />     
-            </div>
+                <div class="mt-4">
+                    <x-jet-label for="email" value="{{ __('Email') }}" />
+                    <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required wire:model.defer="email" />
+                    <x-jet-input-error for="email" class="mt-2" />
+                </div>
 
-            <div class="mt-4">
-           
-                <x-jet-label for="role" value="{{ __('Role') }}" />
-                <select id="role" class="form-multiselect block mt-1 w-full" multiple name="role" required wire:model.defer="role_id" />
+                <div class="mt-4">
+
+                    <x-jet-label for="role" value="{{ __('Role') }}" />
+                    <select id="role" class="form-multiselect block mt-1 w-full" multiple name="role" required wire:model.defer="role_id" />
                     <option value="1"> Admin </option>
                     <option value="2"> Vendor </option>
                     <option value="3"> Technician </option>
-                </select>
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mt-3"> You may select multiple roles</span>
-                <x-jet-input-error for="role_id" class="mt-2" />    
-            </div>            
+                    </select>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mt-3"> You may select multiple roles</span>
+                    <x-jet-input-error for="role_id" class="mt-2" />
+                </div>
             </x-slot>
 
             <x-slot name="footer">
@@ -102,12 +102,12 @@
 
                         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                             <span class="lg:hidden absolute top-auto left-0  bg-blue-200 px-1 py-1 text-xs font-bold">Actions</span>
-                            <x-jet-button wire:click="confirmContractorDeletion( {{$user->id }})" wire:loading.attr="disabled">
+                            <x-jet-button wire:click="confirmUserDelete( {{$user->id }})" wire:loading.attr="disabled">
                                 {{ __('EDIT') }}
                                 </x-jet-danger-button>
 
 
-                                <x-jet-danger-button wire:click="confirmContractorDeletion( {{$user->id }})" wire:loading.attr="disabled">
+                                <x-jet-danger-button wire:click="confirmUserDelete( {{$user->id }})" wire:loading.attr="disabled">
                                     {{ __('Delete') }}
                                 </x-jet-danger-button>
 
@@ -118,6 +118,28 @@
                 </tbody>
             </table>
         </div>
+
+        <!--Delete User Modal -->
+        <x-jet-dialog-modal wire:model="confirmingUserDelete">
+            <x-slot name="title">
+                {{ __('Delete User') }}
+            </x-slot>
+
+            <x-slot name="content">
+                {{ __('Are you sure you want to delete this User?') }}
+            </x-slot>
+
+            <x-slot name="footer">
+
+                <x-jet-danger-button class="ml-2" wire:click="DeleteUser({{ $confirmingUserDelete }})" wire:loading.attr="disabled">
+                    {{ __('Delete Account') }}
+                </x-jet-danger-button>
+                <x-jet-secondary-button wire:click="$set('confirmingUserDelete', false)" wire:loading.attr="disabled">
+                    {{ __('Nevermind') }}
+                </x-jet-secondary-button>
+
+            </x-slot>
+        </x-jet-dialog-modal>
         <div class="mt-4">
             {{ $users->links() }}
         </div>

@@ -10,6 +10,7 @@ class ContractorDetails extends Model
     use HasFactory;
 
     protected $fillable = [
+        'contractors_id',
         'address',
         'city',
         'postcode',

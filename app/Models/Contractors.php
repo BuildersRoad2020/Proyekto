@@ -10,6 +10,7 @@ class Contractors extends Model
     use HasFactory;
 
     protected $fillable = [
+        'role_user_id',
         'name',
         'status'
     ];
