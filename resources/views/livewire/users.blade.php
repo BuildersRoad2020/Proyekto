@@ -102,8 +102,8 @@
 
                         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                             <span class="lg:hidden absolute top-auto left-0  bg-blue-200 px-1 py-1 text-xs font-bold">Actions</span>
-                            <x-jet-button wire:click="confirmUserDelete( {{$user->id }})" wire:loading.attr="disabled">
-                                {{ __('EDIT') }}
+                            <x-jet-button wire:click="confirmUserEdit( {{$user->id }})" wire:loading.attr="disabled">
+                                {{ __('Edit') }}
                                 </x-jet-danger-button>
 
 
@@ -119,6 +119,39 @@
             </table>
         </div>
 
+        <!--Edit User Modal -->
+        <x-jet-dialog-modal wire:model="confirmingUserEdit">
+            <x-slot name="title">
+                {{ __('Edit User') }}
+            </x-slot>
+
+            <x-slot name="content">
+                <div>
+                    <x-jet-label for="name" value="{{ __('Name') }}" />
+                    <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required wire:model.defer="name" />
+                    <x-jet-input-error for="name" class="mt-2" />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label for="email" value="{{ __('Email') }}" />
+                    <x-jet-input id="email" class="block mt-1 w-full disabled:opacity-50" type="email" name="email" :value="old('email')" required wire:model.defer="email" disabled/>
+                    <x-jet-input-error for="email" class="mt-2" />
+                </div>
+
+            </x-slot>
+
+            <x-slot name="footer">
+
+                <x-jet-danger-button class="ml-2" wire:click="EditUser({{ $confirmingUserEdit}})" wire:loading.attr="disabled">
+                    {{ __('Edit Account') }}
+                </x-jet-danger-button>
+                <x-jet-secondary-button wire:click="closeModal" wire:loading.attr="disabled">
+                    {{ __('Nevermind') }}
+                </x-jet-secondary-button>
+
+            </x-slot>
+        </x-jet-dialog-modal>
+
         <!--Delete User Modal -->
         <x-jet-dialog-modal wire:model="confirmingUserDelete">
             <x-slot name="title">
@@ -126,7 +159,7 @@
             </x-slot>
 
             <x-slot name="content">
-                {{ __('Are you sure you want to delete this User?') }}
+                {{ __('Are you sure you want to delete this User? This will remove associated accounts') }}
             </x-slot>
 
             <x-slot name="footer">

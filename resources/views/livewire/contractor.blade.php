@@ -34,12 +34,12 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody> 
                 @foreach($contractors as $contractor)
                 <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
                     <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                         <span class="lg:hidden absolute top-auto left-0 bg-blue-200 px-1 py-1 text-xs font-bold"> Contractor Name</span>
-                        {{$contractor->name }}
+                           {{ $contractor->name }}  {{ $contractor->contractordetails }}
                     </td>
                     <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                         <span class="lg:hidden absolute top-auto left-0  bg-blue-200 px-1 py-1 text-xs font-bold">Status</span>
@@ -48,19 +48,16 @@
 
                     <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                         <span class="lg:hidden absolute top-auto left-0  bg-blue-200 px-1 py-1 text-xs font-bold">Actions</span>
-                        <x-jet-button wire:click="confirmContractorDeletion( {{$contractor->id }})" wire:loading.attr="disabled">
-                            {{ __('EDIT') }}
-                            </x-jet-danger-button>
-
-
+                        <a class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150" href="{{ route('ContractorID', [$contractor->contractordetails])}}">
+                            {{ __('VIEW') }}
+                            </a>
                             <x-jet-danger-button wire:click="confirmContractorDeletion( {{$contractor->id }})" wire:loading.attr="disabled">
                                 {{ __('Delete') }}
                             </x-jet-danger-button>
 
                     </td>
-
                 </tr>
-                @endforeach
+                @endforeach 
             </tbody>
         </table>
     </div>

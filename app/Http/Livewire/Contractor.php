@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Contractors;
+use App\Models\ContractorDetails;
 use Livewire\WithPagination;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -22,10 +23,10 @@ class Contractor extends Component
         'q'
     ];
 
-    public function render()
+    public function render(Contractors $ContractorDetails )
     {
         $this->authorize('viewany', App\Models\Contractors::class);
-        $contractors = Contractors::orderby('name')
+        $contractors = Contractors::orderby('name')->with('ContractorDetails')
             ->when($this->q, function ($query) {
                 return $query->where(function ($query) {
                     $query->where('name', 'LIKE', '%' . $this->q . '%');
@@ -34,10 +35,14 @@ class Contractor extends Component
             ->when($this->status, function ($query) {
                 return $query->where('status', $this->status);
             })
-            ->paginate(8);
+            ->paginate();
+           //->paginate(8);
+           //dd($contractors);
         return view('livewire.contractor', [
-            'contractors' => $contractors
+            'contractors' => $contractors,
         ]);
+
+   
     }
 
     public function updatingStatus()

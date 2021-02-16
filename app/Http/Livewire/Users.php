@@ -24,6 +24,7 @@ class Users extends Component
     public $role_id;
 
     public $confirmingUserAdd = false;
+    public $confirmingUserEdit = false;
     public $confirmingUserDelete = false;
 
     protected $queryString = [  //to show query in url
@@ -40,7 +41,6 @@ class Users extends Component
                 });
             })
             ->paginate(8);
-
         return view('livewire.users', [
             'users' => $users,
         ]);
@@ -50,6 +50,7 @@ class Users extends Component
     {
         $this->resetPage();    //Search box to reset page
     }
+
     //Add Function
     public function confirmUserAdd()
     {
@@ -71,50 +72,72 @@ class Users extends Component
                 'role_id.required' => 'Please select at least one role'
             ]
         );
-
         auth()->user()->create([
             'name' => ucwords($validatedData['name']),
             'email' => $validatedData['email'],
             'password' => Hash::make($password),
         ]);
-     
-
-       //Add a role
+        //Add a role
         foreach ($validatedData['role_id'] as $key => $value) {
             RoleUser::create([
                 'role_id' => $value,
                 'user_id' => User::latest()->pluck('id')->first(),
-                ]);
-                //if role is Contractor, creates contractor and contractor details
+            ]);
+            //if role is Contractor, creates contractor and contractor details
             if ($value == 2) {
                 Contractors::create([
-                    'role_user_id' => RoleUser::latest()->pluck('id')->first(),               
+                    'role_user_id' => RoleUser::latest()->pluck('id')->first(),
                     'name' => ucwords($validatedData['name'])
                 ]);
                 ContractorDetails::create([
-                    'contractors_id' => Contractors::latest()->pluck('id')->first(), 
+                    'contractors_id' => Contractors::latest()->pluck('id')->first(),
                 ]);
-            }       
+            }
         }
-
         $this->confirmingUserAdd = false;
     }
 
     //Delete Function
-
     public function confirmUserDelete($id)
     {
-
-         $this->confirmingUserDelete = $id;
-
+        $this->confirmingUserDelete = $id;
     }
 
     public function DeleteUser(User $id)
     {
-         $id->Contractors()->delete();
-         $id->RoleUser()->delete();
-         $id->delete();
-         $this->confirmingUserDelete = false;
-      
+        $id->Contractors()->delete();
+        $id->RoleUser()->delete();
+        $id->delete();
+        $this->confirmingUserDelete = false;
+    }
+
+    //Edit Function
+    public function closeModal()
+    {
+        $this->confirmingUserEdit = false;
+    }
+
+    public function confirmUserEdit(User $id)
+    {
+        $this->name = $id->name;
+        $this->email = $id->email;
+        $this->confirmingUserEdit = $id;
+    }
+
+    public function EditUser(User $id)
+    {
+        $validatedData = $this->validate(
+            [
+                'name' => ['required', 'string', 'max:255'],
+            ],
+            [
+                'name.required' => 'Please enter a name',
+                //  'role_id.required' => 'Please select at least one role'
+            ]
+        );
+        $validatedData = User::find($id->id);
+        $validatedData->name = ucwords($this->name);
+        $validatedData->save();
+        $this->confirmingUserEdit = false;
     }
 }

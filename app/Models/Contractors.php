@@ -22,6 +22,11 @@ class Contractors extends Model
 
     public function ContractorDetails()
     {
-        return $this->hasMany(ContractorDetails::class);
+        return $this->hasOne(ContractorDetails::class)->select('id', 'contractors_id');
     } 
+
+    public function getContractorDetailsAttribute()
+    {
+        return $this->ContractorDetails()->pluck('id')->first();
+    }
 }
