@@ -69,7 +69,7 @@ class User extends Authenticatable
     }
 
     public function ContractorDetails() {
-        return $this->hasManyThrough(RoleUser::class, Contractors::class, ContractorDetails::class);
+        return $this->hasOneThrough(ContractorDetails::class, Contractors::class);
     }
 
 }

@@ -22,7 +22,7 @@ class Contractors extends Model
 
     public function ContractorDetails()
     {
-        return $this->hasOne(ContractorDetails::class)->select('id', 'contractors_id');
+        return $this->hasOne(ContractorDetails::class);
     } 
 
     public function getContractorDetailsAttribute()
