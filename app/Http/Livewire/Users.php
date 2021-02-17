@@ -107,11 +107,12 @@ class Users extends Component
     {
         //to delete from ContractorDetails Table
         $Contractor = $id->Contractors()->pluck('role_user_id')->first();
+        if ($Contractor != null) {
         $Contractordetails = Contractors::where('role_user_id', $Contractor)->get();
         $find = ContractorDetails::find($Contractordetails)->first();
         $find->delete();
-
         $id->Contractors()->delete(); //to Delete from Contractors Table
+        }
         $id->RoleUser()->delete(); // to Delete from Role_Users Table
         $id->delete(); // to Delete User
         $this->confirmingUserDelete = false;
