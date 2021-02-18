@@ -24,7 +24,7 @@ class ContractorsFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->company,
             'status' => mt_rand(0,1),
             'role_user_id' => RoleUser::factory(),
         ];

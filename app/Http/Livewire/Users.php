@@ -12,6 +12,7 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use phpDocumentor\Reflection\Types\Null_;
 
 class Users extends Component
 {
@@ -107,12 +108,17 @@ class Users extends Component
     {
         //to delete from ContractorDetails Table
         $Contractor = $id->Contractors()->pluck('role_user_id')->first();
+        //dd($Contractor);
         if ($Contractor != null) {
-        $Contractordetails = Contractors::where('role_user_id', $Contractor)->get();
-        $find = ContractorDetails::find($Contractordetails)->first();
+        $Contractordetails = Contractors::where('role_user_id', $Contractor)->pluck('id');
+        $find = ContractorDetails::where('contractors_id', $Contractordetails);    
         $find->delete();
-        $id->Contractors()->delete(); //to Delete from Contractors Table
         }
+         //to Delete from Contractors Table
+       
+        $id->Contractors()->delete();
+        
+ 
         $id->RoleUser()->delete(); // to Delete from Role_Users Table
         $id->delete(); // to Delete User
         $this->confirmingUserDelete = false;

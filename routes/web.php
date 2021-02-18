@@ -26,7 +26,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/contractor', function () 
     return view('contractor');
 })->name('contractor');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/contractor/{key}', ContractorID::class)->name('ContractorID');
+Route::middleware(['auth:sanctum', 'verified'])->get('/contractor/{id}', ContractorID::class)->name('ContractorID');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/users', function () {
     return view('users');

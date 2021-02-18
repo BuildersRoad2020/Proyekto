@@ -66,6 +66,9 @@
                 <thead>
                     <tr>
                         <th class="p-3 font-bold bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            
+                        </th>
+                        <th class="p-3 font-bold bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell">
                             User
                         </th>
                         <th class="p-3 font-bold bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell">
@@ -79,12 +82,18 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody data-turbolinks="false">
                     @foreach($users as $user)
                     <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+                        <td class="w-full lg:w-auto p-3 text-gray-800 text-center  border border-b block lg:table-cell relative lg:static">
+                            <span class="lg:hidden absolute top-auto left-0 bg-blue-200 px-1 py-1 text-xs font-bold">  </span>
+                           <img class="h-8 w-8 rounded-full inline-block align-middle	 " src="{{ asset('storage') . '/' . $user->profile_photo_path}}" alt="" />
+                            
+                        </td>
+
                         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                             <span class="lg:hidden absolute top-auto left-0 bg-blue-200 px-1 py-1 text-xs font-bold"> User </span>
-                            {{$user->name }} 
+                            {{$user->name }}
                         </td>
                         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                             <span class="lg:hidden absolute top-auto left-0  bg-blue-200 px-1 py-1 text-xs font-bold">Email</span>
@@ -134,7 +143,7 @@
 
                 <div class="mt-4">
                     <x-jet-label for="email" value="{{ __('Email') }}" />
-                    <x-jet-input id="email" class="block mt-1 w-full disabled:opacity-50" type="email" name="email" :value="old('email')" required wire:model.defer="email" disabled/>
+                    <x-jet-input id="email" class="block mt-1 w-full disabled:opacity-50" type="email" name="email" :value="old('email')" required wire:model.defer="email" disabled />
                     <x-jet-input-error for="email" class="mt-2" />
                 </div>
 
@@ -173,7 +182,7 @@
 
             </x-slot>
         </x-jet-dialog-modal>
-        <div class="mt-4">
+        <div class="mt-4" data-turbolinks="false">
             {{ $users->links() }}
         </div>
     </div>
