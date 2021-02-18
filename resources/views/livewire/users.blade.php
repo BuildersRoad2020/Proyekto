@@ -66,7 +66,7 @@
                 <thead>
                     <tr>
                         <th class="p-3 font-bold bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                            
+
                         </th>
                         <th class="p-3 font-bold bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell">
                             User
@@ -86,9 +86,33 @@
                     @foreach($users as $user)
                     <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
                         <td class="w-full lg:w-auto p-3 text-gray-800 text-center  border border-b block lg:table-cell relative lg:static">
-                            <span class="lg:hidden absolute top-auto left-0 bg-blue-200 px-1 py-1 text-xs font-bold">  </span>
-                           <img class="h-8 w-8 rounded-full inline-block align-middle	 " src="{{ asset('storage') . '/' . $user->profile_photo_path}}" alt="" />
-                            
+                            <span class="lg:hidden absolute top-auto left-0 bg-blue-200 px-1 py-1 text-xs font-bold"> </span>
+                            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+                                <!-- Profile Photo File Input -->
+                                <input type="file" class="hidden" wire:model="photo" x-ref="photo" x-on:change="
+                                    photoName = $refs.photo.files[0].name;
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => {
+                                        photoPreview = e.target.result;
+                                    };
+                                    reader.readAsDataURL($refs.photo.files[0]);
+                            " />
+
+                                <!-- Current Profile Photo -->
+                                <div class="mt-2" x-show="! photoPreview">
+                                    <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="h-8 w-8 rounded-full inline-block align-middle">
+                                </div>
+
+                                <!-- New Profile Photo Preview -->
+                                <div class="mt-2" x-show="photoPreview">
+                                    <span class="block rounded-full w-20 h-20" x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
+                                    </span>
+                                </div>
+
+
+
+
+                            </div>
                         </td>
 
                         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
