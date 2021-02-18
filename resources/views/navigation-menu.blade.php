@@ -154,7 +154,7 @@
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
-            @can('viewany', App\Models\User::class)
+            @can('viewany', App\Models\Users::class)
             <x-jet-responsive-nav-link href="{{ route('users') }}" :active="request()->routeIs('users')">
                 {{ __('Users') }}
             </x-jet-responsive-nav-link>

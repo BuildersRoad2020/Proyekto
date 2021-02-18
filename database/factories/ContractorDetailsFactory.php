@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\ContractorDetails;
+use App\Models\Contractors;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ContractorDetailsFactory extends Factory
@@ -22,6 +23,7 @@ class ContractorDetailsFactory extends Factory
     public function definition()
     {
         return [
+            'contractors_id' => Contractors::factory(),
             'address' => $this->faker->streetAddress,
             'city' => $this->faker->city,
             'postcode' => $this->faker->postcode,
