@@ -35,7 +35,7 @@ class Contractor extends Component
             ->when($this->status, function ($query) {
                 return $query->where('status', $this->status);
             })
-            ->paginate();
+            ->paginate(10);
            //->paginate(8);
            //dd($contractors);
         return view('livewire.contractor', [

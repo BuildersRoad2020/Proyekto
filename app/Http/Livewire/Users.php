@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use phpDocumentor\Reflection\Types\Null_;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class Users extends Component
 {
@@ -41,7 +41,7 @@ class Users extends Component
                     $query->where('name', 'LIKE', '%' . $this->q . '%');
                 });
             })
-            ->paginate(8);
+            ->paginate(10);
         return view('livewire.users', [
             'users' => $users,
         ]);
