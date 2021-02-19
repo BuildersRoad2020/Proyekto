@@ -161,5 +161,6 @@ class ContractorID extends Component
           $validatedData->save();
 
           $this->confirmingEdit = false;
+          session()->flash('message', 'Contractor has been updated');
     }
 }

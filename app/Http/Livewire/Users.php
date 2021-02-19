@@ -96,6 +96,7 @@ class Users extends Component
             }
         }
         $this->confirmingUserAdd = false;
+        session()->flash('message', 'User has been added');
     }
 
     //Delete Function
@@ -122,6 +123,7 @@ class Users extends Component
         $id->RoleUser()->delete(); // to Delete from Role_Users Table
         $id->delete(); // to Delete User
         $this->confirmingUserDelete = false;
+        session()->flash('message', 'User has been deleted');
     }
 
     //Edit Function
@@ -152,5 +154,7 @@ class Users extends Component
         $validatedData->name = ucwords($this->name);
         $validatedData->save();
         $this->confirmingUserEdit = false;
+        $this->resetPage();
+        session()->flash('message', 'User has been updated');
     }
 }

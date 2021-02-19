@@ -69,5 +69,6 @@ class Contractor extends Component
         $id->ContractorDetails()->delete();
         $id->delete();
         $this->confirmingContractorDeletion = false;
+        session()->flash('message', 'Contractor has been removed');
     }
 }
