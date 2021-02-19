@@ -139,9 +139,25 @@ class ContractorID extends Component
           ]);
         
           $validatedData = ContractorDetails::find($this->contractors->id);
-          //dd($validatedData);
-     
           $validatedData->address = ucwords($this->address);
+          $validatedData->city = $this->city;
+          $validatedData->postcode = $this->postcode;
+          $validatedData->state = $this->state;
+          $validatedData->country = $this->country;
+          $validatedData->abn = $this->abn;
+          $validatedData->name_primarycontact = $this->name_primarycontact;
+          $validatedData->phone_primary = $this->phone_primary;
+          $validatedData->email_primary = $this->email_primary;
+          $validatedData->name_secondarycontact = $this->name_secondarycontact;
+          $validatedData->phone_secondary = $this->phone_secondary;
+          $validatedData->email_secondary = $this->email_secondary;
+          $validatedData->terms = $this->terms;
+          $validatedData->currency = $this->currency;
+          $validatedData->bankname = $this->bankname;
+          $validatedData->branch = $this->branch;
+          $validatedData->accountname = $this->accountname;      
+          $validatedData->bsb = $this->bsb;  
+          $validatedData->accountnumber = $this->accountnumber;                                              
           $validatedData->save();
 
           $this->confirmingEdit = false;

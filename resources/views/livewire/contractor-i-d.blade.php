@@ -145,7 +145,7 @@
                     </div>
                 </div>
 
-                <button class="inline-flex items-center px-4 py-2 bg-blue-500 border border-blue-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest mb-2 ml-2 hover:bg-blue-300 border border-blue-500 active:bg-blue-900 focus:outline-none focus:border-gray-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 " wire:click="$set('confirmingEdit', true)" wire:loading.attr="disabled">
+                <button class="inline-flex items-center px-4 py-2 bg-blue-500 border border-blue-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest mb-2 ml-2 hover:bg-blue-300 border border-blue-5git 00 active:bg-blue-900 focus:outline-none focus:border-gray-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 " wire:click="$set('confirmingEdit', true)" wire:loading.attr="disabled">
                     {{ __('Save') }}
                 </button>
 
