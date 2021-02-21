@@ -34,7 +34,7 @@ class Users extends Component
 
     public function render()
     {
-        $this->authorize('viewany', App\Models\Users::class);
+        $this->authorize('admin', App\Models\Users::class);
         $users = User::with('RoleUser')->orderby('name')
             ->when($this->q, function ($query) {
                 return $query->where(function ($query) {
@@ -87,11 +87,12 @@ class Users extends Component
             //if role is Contractor, creates contractor and contractor details
             if ($value == 2) {
                 Contractors::create([
-                    'role_user_id' => RoleUser::latest()->pluck('id')->first(),
+                    'role_user_id' => RoleUser::where('role_id',2)->latest()->pluck('id')->first(),
                     'name' => ucwords($validatedData['name'])
                 ]);
                 ContractorDetails::create([
                     'contractors_id' => Contractors::latest()->pluck('id')->first(),
+                    'email_primary'=> $this->email
                 ]);
             }
         }
@@ -114,12 +115,9 @@ class Users extends Component
         $Contractordetails = Contractors::where('role_user_id', $Contractor)->pluck('id');
         $find = ContractorDetails::where('contractors_id', $Contractordetails);    
         $find->delete();
+        $id->Contractors()->delete();       //to Delete from Contractors Table
         }
-         //to Delete from Contractors Table
-       
-        $id->Contractors()->delete();
-        
- 
+  
         $id->RoleUser()->delete(); // to Delete from Role_Users Table
         $id->delete(); // to Delete User
         $this->confirmingUserDelete = false;

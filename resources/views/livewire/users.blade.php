@@ -15,7 +15,7 @@
     </div>   
 @endif
 
-    <div class="mt-6">
+    <div class="mt-1">
         <div class="flex justify-between">
             <div class="pt-2 relative text-gray-600">
                 <input wire:model.debounce.500ms="q" class="border border-gray-300 rounded-full text-xs text-gray-600 h-8 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" type="search" name="search" placeholder="Search">

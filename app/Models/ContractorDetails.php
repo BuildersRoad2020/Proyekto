@@ -35,5 +35,15 @@ class ContractorDetails extends Model
     public function Contractors()
     {
         return $this->belongsTo(Contractors::class);
-    }     
+    }    
+    
+/*     public function Countries()
+    {
+        return $this->belongsTo(Countries::class);
+    }
+
+    public function getCountriesAttribute()
+    {
+        return $this->Countries()->pluck('id','name')->first();
+    }  */
 }

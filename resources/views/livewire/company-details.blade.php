@@ -4,14 +4,18 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ $id->name }}
             <span class="{{$id->status == 0 ? 'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-green-800' : 'px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800' }}"> {{$id->status == 0 ? 'onHold' : 'Approved' }}</span>
+
+
         </h2>
+
     </x-slot>
 
-    <div class="py-12 pb-2">
+
+    <div class="py-2 pb-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 @if(session()->has('message'))
-                <div class="bg-white text-right py-4 lg:px-4 rounded animate-fade-in-down" wire:poll.5000ms>
+                <div class="bg-white text-right py-4 lg:px-4 rounded animate-fade-in-down" wire:poll.3000ms>
                     <div class="p-2 bg-green-500 items-center text-green-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
                         <span class="flex rounded-full bg-green-200 uppercase px-2 py-1 text-xs font-bold mr-3">
                             <svg class="h-8 w-8 text-white fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -23,21 +27,80 @@
                     </div>
                 </div>
                 @endif
-                <div class="flex justify-between">
+                <div class="flex justify-between ">
                     <div class="pt-2 relative">
                         <h2 class="font-semibold text-l text-blue-800 leading-tight pl-2"> Contractor Details </h2>
-                    </div>
-                    <div class="mt-2 mr-4">
-                        <label class="inline-flex items-center mr-auto">
-                            <select class="border border-gray-300 rounded-full text-xs text-gray-600 h-8 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" :value="old('status')" wire:model.debounce.2000000ms="status">
-                                <option value="0">on Hold</option>
-                                <option value="1">Approved</option>
-                            </select>
-                        </label>
                     </div>
                 </div>
 
                 <div class="flex flex-wrap md:flex-wrap mt-2 mb-2 pl-2 ">
+
+                <div class="mr-2 w-full md:w-1/3 mb-1">
+                        <x-jet-label for="address" value="{{ __('Street') }}" />
+                        <x-jet-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required wire:model.defer="address" />
+                        <x-jet-input-error for="address" class="mt-2" />
+                    </div>
+
+                    @if (!is_null($info->country))
+                    <div class="mr-2 w-full md:w-1/5 mb-1">
+                        <x-jet-label for="city" value="{{ __('City') }}" />
+                        <x-jet-input id="city" class="block mt-1 w-full" type="text" name="city" :value="old('city')" required wire:model.defer="city" />
+                        <x-jet-input-error for="city" class="mt-2" />
+                    </div>
+                    <div class="mr-2 w-full md:w-1/5 mb-1">
+                        <x-jet-label for="state" value="{{ __('State') }}" />
+                        <x-jet-input id="state" class="block mt-1 w-full" type="text" name="state" :value="old('state')" required wire:model.defer="state" />
+                        <x-jet-input-error for="state" class="mt-2" />
+                    </div>
+                    <div class="mr-2 w-full md:w-1/5 mb-1">
+                        <x-jet-label for="country" value="{{ __('Country') }}" />
+                        <x-jet-input id="country" class="block mt-1 w-full" type="text" name="countries_id" :value="old('country')" required wire:model.defer="country" />
+                        <x-jet-input-error for="country" class="mt-2" />
+                    </div>
+                    @endif
+
+                   @empty ($info->country)
+                    <div class="mr-2 w-full md:w-auto mb-1 mt-1" >
+                        <x-jet-label value="{{ __('Country') }}" />
+                        <select class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="SelectedCountry">
+                            <option value="" selected>Select a Country</option>
+                            @foreach ($countries as $country)
+                            <option value="{{$country->id}}">{{$country->name}}</option>
+                            @endforeach
+                        </select>
+                        <x-jet-input-error for="SelectedCountry" class="mt-2" /> 
+                    </div>
+
+                    @if (!is_null($states))
+                    <div class="mr-2 w-full md:w-auto mb-1 mt-1" >
+                        <x-jet-label value="{{ __('State') }}" />
+                        <select class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="SelectedState">
+                            <option value="" disabled selected>Select a State</option>
+                            @foreach ($states as $state)
+                            <option value="{{$state->id}}">{{$state->name}}</option>
+                            @endforeach
+                        </select>
+                        <x-jet-input-error for="SelectedState" class="mt-2" /> 
+                    </div>
+                    @endif                   
+                    @if (!is_null($cities))
+                    <div class="mr-2 w-full md:w-auto mb-1 mt-1" >
+                        <x-jet-label value="{{ __('City') }}" />
+                        <select class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="SelectedCity">
+                            <option value="" disabled selected>Select a City</option>
+                            @foreach ($cities as $city)
+                            <option value="{{$city->id}}">{{$city->name}}</option>
+                            @endforeach
+                        </select>
+                        <x-jet-input-error for="SelectedCity" class="mt-2" /> 
+                    </div>
+                    @endif
+                   @endempty    
+                   <div class="mr-2 w-full md:w-24 mb-1">
+                        <x-jet-label for="postcode" value="{{ __('Postal Code') }}" />
+                        <x-jet-input id="postcode" class="block mt-1 w-full" type="text" name="postcode" :value="old('postcode')" required wire:model.defer="postcode" />
+                        <x-jet-input-error for="postcode" class="mt-2" />
+                    </div>            
 
                     <div class="mr-2 w-full md:w-1/4 mb-1">
                         <x-jet-label for="name_primarycontact" value="{{ __('Contact Person') }}" />
@@ -54,33 +117,8 @@
                         <x-jet-input id="email_primary" class="block mt-1 w-full" type="email" name="email_primary" :value="old('email_primary')" required wire:model.defer="email_primary" />
                         <x-jet-input-error for="email_primary" class="mt-2" />
                     </div>
+                                
 
-
-                    <div class="mr-2 w-full md:w-1/3 mb-1">
-                        <x-jet-label for="address" value="{{ __('Street') }}" />
-                        <x-jet-input id="address" class="block mt-1 w-full disabled:opacity-50" disabled type="text" name="address" :value="old('address')" required wire:model.defer="address" />
-                        <x-jet-input-error for="address" class="mt-2" />
-                    </div>
-                    <div class="mr-2 w-full md:w-1/5 mb-1">
-                        <x-jet-label for="city" value="{{ __('City') }}" />
-                        <x-jet-input id="city" class="block mt-1 w-full disabled:opacity-50" disabled type="text" name="city" :value="old('city')" required wire:model.defer="city" />
-                        <x-jet-input-error for="city" class="mt-2" />
-                    </div>
-                    <div class="mr-2 w-full md:w-1/5 mb-1">
-                        <x-jet-label for="state" value="{{ __('State') }}" />
-                        <x-jet-input id="state" class="block mt-1 w-full disabled:opacity-50" disabled type="text" name="state" :value="old('state')" required wire:model.defer="state" />
-                        <x-jet-input-error for="state" class="mt-2" />
-                    </div>
-                    <div class="mr-2 w-full md:w-1/5 mb-1">
-                        <x-jet-label for="country" value="{{ __('Country') }}" />
-                        <x-jet-input id="country" class="block mt-1 w-full disabled:opacity-50" disabled type="text" name="country" :value="old('country')" required wire:model.defer="country" />
-                        <x-jet-input-error for="country" class="mt-2" />
-                    </div>
-                    <div class="mr-2 w-full md:w-24 mb-1">
-                        <x-jet-label for="postcode" value="{{ __('Postal Code') }}" />
-                        <x-jet-input id="postcode" class="block mt-1 w-full disabled:opacity-50"  disabled type="text" name="postcode" :value="old('postcode')" required wire:model.defer="postcode" />
-                        <x-jet-input-error for="postcode" class="mt-2" />
-                    </div>
 
                     <div class="mr-2 w-full md:w-1/4 mb-1">
                         <x-jet-label for="name_secondarycontact" value="{{ __('Alternate Contact Person') }}" />
@@ -153,34 +191,31 @@
                     </div>
                 </div>
 
-                <button class="inline-flex items-center px-4 py-2 bg-blue-500 border border-blue-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest mb-2 ml-2 hover:bg-blue-300 border border-blue-5git 00 active:bg-blue-900 focus:outline-none focus:border-gray-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 " wire:click="$set('confirmingEdit', true)" wire:loading.attr="disabled">
+                <button class="inline-flex items-center px-4 py-2 bg-blue-500 border border-blue-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest mb-2 ml-2 hover:bg-blue-300 border border-blue-5git 00 active:bg-blue-900 focus:outline-none focus:border-gray-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 " wire:click="confirmEdit" wire:loading.attr="disabled">
                     {{ __('Save') }}
                 </button>
+                <div wire:Loading> Just a sec ... </div>
 
             </div>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <x-jet-dialog-modal wire:model="confirmingEdit">
-        <x-slot name="title">
-            {{ __('Update Contractor') }}
-        </x-slot>
+    <div class="py-1 pb-2">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
-        <x-slot name="content">
-            {{ __('Are you sure you want to update this contractor?') }}
-        </x-slot>
+                <h2 class="font-semibold text-l text-blue-800 leading-tight mb-2 pt-2 pl-2"> CountryID: {{$SelectedCountry}} | StateID: {{$SelectedState}}  | CITYID: {{$SelectedCity}} </h2>
+                <div class="flex flex-wrap md:flex-wrap mt-2 mb-2 pl-2 ">
 
-        <x-slot name="footer">
 
-            <x-jet-button class="ml-2" wire:click="confirmEdit" wire:loading.attr="disabled">
-                {{ __('Update') }}
-            </x-jet-button>
-            <x-jet-secondary-button wire:click="$set('confirmingEdit', false)" wire:loading.attr="disabled">
-                {{ __('Nevermind') }}
-            </x-jet-secondary-button>
+ 
 
-        </x-slot>
-    </x-jet-dialog-modal>
 
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </div>

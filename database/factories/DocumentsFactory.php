@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Contractors;
-use App\Models\RoleUser;
+use App\Models\Documents;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ContractorsFactory extends Factory
+class DocumentsFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Contractors::class;
+    protected $model = Documents::class;
 
     /**
      * Define the model's default state.
@@ -24,8 +23,8 @@ class ContractorsFactory extends Factory
     {
         return [
             'name' => $this->faker->company,
-            'status' => mt_rand(0,1),
-            'role_user_id' => RoleUser::factory(),
+            'required' => mt_rand(0,1),
+            'documents__category_id' => mt_rand(1,4),
         ];
     }
 }

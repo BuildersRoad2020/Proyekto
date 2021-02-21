@@ -15,7 +15,7 @@ class UsersPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function admin(User $user)
     {
         $users = $user->roleuser()->pluck('role_id')->toarray();
         foreach ($users as $key => $role_id) {
@@ -24,16 +24,15 @@ class UsersPolicy
         }    
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function view(User $user, User $model)
+    public function adminvendor(User $user)
     {
-        //
+        $users = $user->roleuser()->pluck('role_id')->toarray();
+        foreach ($users as $key => $role_id) {
+            if ($role_id == 2 && 1)
+            return true;   
+            else if ($role_id == 2)
+            return true;
+        }   
     }
 
     /**

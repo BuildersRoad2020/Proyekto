@@ -34,40 +34,16 @@ class ContractorID extends Component
     public $accountnumber;
     public $status; 
     public $confirmingEdit = false;   
- /*    public Contractors $status;
-    public $name; */
-
-/*     public $rules = [
-        'address' => ['required'],
-        'city' => ['required'],
-        'postcode' => ['required'],
-        'state' => ['required'],
-        'country' => ['required'],
-        'abn' => ['required'],
-        'name_primarycontact' => ['required'],
-        'phone_primary' => ['required'],
-        'email_primary' => ['required'],
-        'name_secondarycontact' => ['required'],
-        'phone_secondary' => ['required'],
-        'email_secondary' => ['required'],
-        'terms' => ['required'],
-        'currency' => ['required'],
-        'bankname' => ['required'],
-        'branch' => ['required'],
-        'accountname' => ['required'],
-        'bsb' => ['required'],
-        'accountnumber' => ['required']
-    ]; */
 
     public function mount(ContractorDetails $id)
     {
-        $this->authorize('viewany', App\Models\Contractors::class);
+        $this->authorize('admin', App\Models\Users::class);
         $this->contractors = $id;
         $this->address = $id->address;
-        $this->city = $id->city;   
+        $this->city = $id->city;
         $this->postcode = $id->postcode;              
-        $this->state = $id->state; 
-        $this->country = $id->country; 
+        $this->state = $id->state;
+        $this->country = $id->country;
         $this->abn = $id->abn;         
         $this->name_primarycontact = $id->name_primarycontact; 
         $this->phone_primary = $id->phone_primary;   
@@ -102,11 +78,7 @@ class ContractorID extends Component
         $this->confirmingEdit = false;
         $validatedData = $this->validate([
             'address' => 'required|max:60',
-            'city' => 'required',
-            'postcode' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'abn' => 'required|min:10|max:20',
+            'abn' => 'sometimes',
             'name_primarycontact' => 'required',
             'phone_primary' => ['required', 'regex:/^[0-9]+$/'],
             'terms' => 'required',
@@ -121,13 +93,7 @@ class ContractorID extends Component
             'name_primarycontact.required' => 'Please enter Primary Contact Person',
             'phone_primary.required' => 'Please enter contact number',
             'phone_primary.regex' => 'No space and only numbers',
-            'address.required' => 'Street Name is required',
-            'address.max' => 'Street Name maximum characters is only 60',
-            'country.required' => 'Please select a Country',
-            'state.required' => 'Please select a State',
-            'city.required' => 'Please select a City',
-            'postcode.required' => 'Post Code is required',
-            'abn.required' => 'Please enter your Australian Business Number',
+            'abn.sometimes' => 'Please enter your Australian Business Number',
             'terms.required' => 'Please select Payment Terms',
             'currency.required' => 'Please select your Currency',
             'bankname.required' => 'Please enter your Bank Name',
@@ -140,10 +106,6 @@ class ContractorID extends Component
         
           $validatedData = ContractorDetails::find($this->contractors->id);
           $validatedData->address = ucwords($this->address);
-          $validatedData->city = $this->city;
-          $validatedData->postcode = $this->postcode;
-          $validatedData->state = $this->state;
-          $validatedData->country = $this->country;
           $validatedData->abn = $this->abn;
           $validatedData->name_primarycontact = $this->name_primarycontact;
           $validatedData->phone_primary = $this->phone_primary;

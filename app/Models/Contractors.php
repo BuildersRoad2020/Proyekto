@@ -25,8 +25,15 @@ class Contractors extends Model
         return $this->hasOne(ContractorDetails::class);
     } 
 
+    public function ContractorSkills()
+    {
+        return $this->hasMany(ContractorSkills::class);
+    } 
+
     public function getContractorDetailsAttribute()
     {
         return $this->ContractorDetails()->pluck('id')->first();
     }
+
+
 }

@@ -25,7 +25,7 @@ class Contractor extends Component
 
     public function render(Contractors $ContractorDetails )
     {
-        $this->authorize('viewany', App\Models\Contractors::class);
+        $this->authorize('admin', App\Models\Users::class);
         $contractors = Contractors::orderby('name')->with('ContractorDetails')
             ->when($this->q, function ($query) {
                 return $query->where(function ($query) {

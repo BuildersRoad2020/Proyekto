@@ -14,4 +14,9 @@ class Countries extends Model
         return $this->hasMany(States::class);
     }   
 
+/*     public function ContractorDetails()
+    {
+        return $this->hasOne(ContractorDetails::class);
+    } */
+
 }
