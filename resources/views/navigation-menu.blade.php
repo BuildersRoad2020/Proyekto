@@ -211,6 +211,13 @@
                 <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
                 </x-jet-responsive-nav-link>
+                <!-- Admin Management -->
+                @can('admin', App\Models\Users::class)
+                <x-jet-responsive-nav-link href="{{ route('adminsettings') }}" :active="request()->routeIs('adminsettings')">
+                    {{ __('Settings') }}
+                </x-jet-responsive-nav-link>
+                @endcan  
+                 
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                 <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
