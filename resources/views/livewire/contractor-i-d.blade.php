@@ -161,6 +161,19 @@
         </div>
     </div>
 
+    <div class="py-1 pb-2">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+
+                <h2 class="font-semibold text-l text-blue-800 leading-tight mb-2 pt-2 pl-2"> Skills </h2>
+                <div class="flex flex-wrap md:flex-wrap mt-2 mb-2 pl-2 ">
+                @if(count($id->ContractorSkills) >= 1) <span class="px-2 inline-flex text-s leading-5 font-semibold rounded-full bg-green-600 text-white mt-2 transition duration-500 ease-in-out transform hover:-translate-y-1">  @foreach($id->ContractorSkills as $Skill) {{$Skill->Skills->name}} @endforeach  </span> @endif
+                @if(count($id->ContractorSkills) < 1)  <span class="px-2 inline-flex text-s leading-5 font-semibold rounded-full bg-yellow-600 text-white mt-2 transition duration-500 ease-in-out transform hover:-translate-y-1">  No Skills Added </span> @endif  
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Edit Modal -->
     <x-jet-dialog-modal wire:model="confirmingEdit">
         <x-slot name="title">
@@ -182,5 +195,7 @@
 
         </x-slot>
     </x-jet-dialog-modal>
+
+
 
 </div>

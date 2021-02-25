@@ -15,7 +15,7 @@ class UsersPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function admin(User $user)
+    public function admin(User $user) // admin only
     {
         $users = $user->roleuser()->pluck('role_id')->toarray();
         foreach ($users as $key => $role_id) {
@@ -24,12 +24,36 @@ class UsersPolicy
         }    
     }
 
-    public function adminvendor(User $user)
+    public function vendor(User $user) //vendor only
     {
+        $users = $user->roleuser()->pluck('role_id')->toarray();
+        foreach ($users as $key => $role_id) {
+            if ($role_id == 2)
+            return true;   
+        }    
+    }
+
+    public function adminvendor(User $user) //1: admin + vendor 
+    {                                       //2: vendor only
         $users = $user->roleuser()->pluck('role_id')->toarray();
         foreach ($users as $key => $role_id) {
             if ($role_id == 2 && 1)
             return true;   
+            else if ($role_id == 2)
+            return true;
+        }   
+    }
+
+    
+    public function adminvendor2(User $user) //1: admin + vendor 
+    {                                       //2: vendor only
+                                            //3: admin oly
+        $users = $user->roleuser()->pluck('role_id')->toarray();
+        foreach ($users as $key => $role_id) {
+            if ($role_id == 2 && 1)
+            return true;   
+            if ($role_id == 1)
+            return true;
             else if ($role_id == 2)
             return true;
         }   

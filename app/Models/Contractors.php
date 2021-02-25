@@ -35,5 +35,15 @@ class Contractors extends Model
         return $this->ContractorDetails()->pluck('id')->first();
     }
 
+    public function Technicians()
+    {
+        return $this->hasMany(Technicians::class);
+    } 
+
+    public function getTechniciansAttribute()
+    {
+        return $this->Technicians()->pluck('id','name')->first();
+    }
+    
 
 }

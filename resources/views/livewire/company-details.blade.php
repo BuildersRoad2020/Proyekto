@@ -199,23 +199,4 @@
             </div>
         </div>
     </div>
-
-    <div class="py-1 pb-2">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-
-                <h2 class="font-semibold text-l text-blue-800 leading-tight mb-2 pt-2 pl-2"> CountryID: {{$SelectedCountry}} | StateID: {{$SelectedState}}  | CITYID: {{$SelectedCity}} </h2>
-                <div class="flex flex-wrap md:flex-wrap mt-2 mb-2 pl-2 ">
-
-
- 
-
-
-
-                </div>
-            </div>
-        </div>
-
-
-    </div>
 </div>

@@ -39,7 +39,7 @@
         <div class="ml-4 w-full md:w-full mb-1 mt-2" wire:poll.5000ms>
             @isset ($documents_category)
             @foreach ($documents_category as $document)
-            <span class="px-2 inline-flex text-s leading-5 font-semibold rounded-full bg-indigo-600 text-white mt-3"> {{$document->name}} 
+            <span class="px-2 inline-flex text-s leading-5 font-semibold rounded-full bg-indigo-600 text-white mt-3 transition duration-500 ease-in-out transform hover:-translate-y-1"> {{$document->name}} 
             
             <button type="submit" wire:click="confirmDeleteDocument( {{$document->id}})">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 1 20 20" fill="currentColor" class="text-white h-4 w-4 fill-current">

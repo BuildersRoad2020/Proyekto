@@ -8,11 +8,13 @@ use App\Models\Contractors;
 use App\Models\ContractorDetails;
 use App\Models\RoleUser;
 use App\Models\Roles;
+use App\Models\Technicians;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Validation\Rule;
 
 class Users extends Component
 {
@@ -60,6 +62,20 @@ class Users extends Component
 
     public function UserAdd()
     {
+
+        $invalid = array('1', '3');
+        $invalid2 = array('3');
+
+        if ($this->role_id == $invalid2) {
+            $this->confirmingUserAdd = false;
+            session()->flash('error', 'Cannot add tech without a vendor');
+        }
+
+        if ($this->role_id == $invalid) {
+            $this->confirmingUserAdd = false;
+            session()->flash('error', 'Cannot add tech');
+        }
+
         $password =  STR::random(10);
         $validatedData = $this->validate(
             [
@@ -70,30 +86,62 @@ class Users extends Component
             [
                 'name.required' => 'Please enter a name',
                 'email.required' => 'Please enter an email address',
-                'role_id.required' => 'Please select at least one role'
+                // 'role_id.required' => 'Please select at least one role'
             ]
         );
-        auth()->user()->create([
-            'name' => ucwords($validatedData['name']),
-            'email' => $validatedData['email'],
-            'password' => /* Hash::make($password), */ '$2y$10$rhm2pp2wXz7jg5z10ca2/.NfsaXzFTPNq/q2y0ZkKSa6CBwFJYga6'
-        ]);
-        //Add a role
+
+        if ($validatedData['role_id'] == $invalid2) {
+            $this->confirmingUserAdd = false;
+            session()->flash('message', 'Invalid Roles');
+        }
+
+
+        $user = new User;
+        $user->name = ucwords($validatedData['name']);
+        $user->email = $validatedData['email'];
+        $user->password = /* Hash::make($password), */ '$2y$10$rhm2pp2wXz7jg5z10ca2/.NfsaXzFTPNq/q2y0ZkKSa6CBwFJYga6';
+        $user->save();
+
         foreach ($validatedData['role_id'] as $key => $value) {
-            RoleUser::create([
-                'role_id' => $value,
-                'user_id' => User::latest()->pluck('id')->first(),
-            ]);
-            //if role is Contractor, creates contractor and contractor details
-            if ($value == 2) {
-                Contractors::create([
-                    'role_user_id' => RoleUser::where('role_id',2)->latest()->pluck('id')->first(),
-                    'name' => ucwords($validatedData['name'])
-                ]);
-                ContractorDetails::create([
-                    'contractors_id' => Contractors::latest()->pluck('id')->first(),
-                    'email_primary'=> $this->email
-                ]);
+
+            switch ($value) {
+                case 1:  //admin only
+                    // dd('1');
+                    $role = RoleUser::create([
+                        'role_id' => '1',
+                        'user_id' => $user->id
+                    ]);
+                    break;
+
+                case 2: //contractor
+                    // dd('2');
+                    $role = RoleUser::create([
+                        'role_id' => '2',
+                        'user_id' => $user->id
+                    ]);
+                    $contractor = Contractors::create([
+                        'role_user_id' =>  $role->id,
+                        'name' => $user->name,
+                    ]);
+
+                    $contractordetails = ContractorDetails::create([
+                        'contractors_id' => $contractor->id,
+                        'name' => $user->name,
+                    ]);
+                    break;
+                case 3: //user and assigned to last created contractor
+                    // dd('3');
+                    $roletechnician = RoleUser::create([
+                        'role_id' => '3',
+                        'user_id' => $user->id
+                    ]);
+
+                    $technician = Technicians::create([
+                        'contractors_id' => $id = Contractors::latest()->pluck('id')->first(),
+                        'role_users_id' => $roletechnician->id,
+                        'name' => $user->name,
+                    ]);
+                    break;
             }
         }
         $this->confirmingUserAdd = false;
@@ -109,18 +157,31 @@ class Users extends Component
     public function DeleteUser(User $id)
     {
         //to delete from ContractorDetails Table
-        $Contractor = $id->Contractors()->pluck('role_user_id')->first();
-        //dd($Contractor);
-        if ($Contractor != null) {
-        $Contractordetails = Contractors::where('role_user_id', $Contractor)->pluck('id');
-        $find = ContractorDetails::where('contractors_id', $Contractordetails);    
-        $find->delete();
-        $id->Contractors()->delete();       //to Delete from Contractors Table
+        //$user = 
+        $Contractor = $id->RoleUser()->where('role_id', 2)->pluck('id')->first();
+
+        // dd($Contractor);
+        // dd($Contractor);
+        if ($Contractor !== null) {
+
+            $Contractordetails = Contractors::where('role_user_id', $Contractor)->pluck('id');
+            $find = ContractorDetails::where('contractors_id', $Contractordetails);
+            $find->delete();
+
+            $Technician = Technicians::where('contractors_id', $Contractordetails)->pluck('id'); //to delete from Technicians Table
+
+            if ($Technician !== null) {
+                foreach ($Technician as $key => $value) {
+                    Technicians::find($value)->delete();
+                }
+            }
+            $query = Contractors::find($Contractordetails)->first()->delete();    //to Delete from Contractors Table
+            $id->delete();
+            $this->confirmingUserDelete = false;
+        } else if ($Contractor === null) {
+            $id->delete();
+            $this->confirmingUserDelete = false;
         }
-  
-        $id->RoleUser()->delete(); // to Delete from Role_Users Table
-        $id->delete(); // to Delete User
-        $this->confirmingUserDelete = false;
         session()->flash('message', 'User has been deleted');
     }
 

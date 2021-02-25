@@ -24,7 +24,7 @@ class RoleUserFactory extends Factory
     {
             return [
                 'user_id' => User::factory(),
-                'role_id' => '2'
+                'role_id' => '3'
         ];
         
     }

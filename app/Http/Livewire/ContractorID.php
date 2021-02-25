@@ -64,7 +64,8 @@ class ContractorID extends Component
 
     public function render()
     {
-        $id =  Contractors::where('id', $this->contractors->contractors_id)->select('name', 'status')->first();
+        $id =  Contractors::where('id', $this->contractors->contractors_id)->select('name', 'status','id')->with('ContractorSkills.Skills')->first();
+        //dd($id);
         $this->status = $id->status;
 
        // dd($this->name);

@@ -24,6 +24,7 @@
         <div class="px-4">
             <div class="pt-2 relative text-gray-600">
                 <input required wire:model.defer="name" class="border border-gray-300 rounded-full text-xs text-gray-600 h-8 w-full bg-white hover:border-gray-400 focus:outline-none appearance-none" type="text" name="add" placeholder="Add Skills">
+              
                 <button type="submit" class="absolute right-0 top-0 mt-4 mr-4" wire:click="AddSkill()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-gray-600 h-4 w-5 fill-current">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
@@ -39,7 +40,7 @@
         <div class="ml-4 w-full md:w-full mb-1 mt-2">
             @isset ($skills)
             @foreach ($skills as $skill)
-            <span class="px-2 inline-flex text-s leading-5 font-semibold rounded-full bg-green-600 text-white mt-3"> {{$skill->name}} 
+            <span class="px-2 inline-flex text-s leading-5 font-semibold rounded-full bg-green-600 text-white mt-3 transition duration-500 ease-in-out transform hover:-translate-y-1"> {{$skill->name}} 
             
             <button type="submit" wire:click="confirmDeleteSkill( {{$skill->id}})">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 1 20 20" fill="currentColor" class="text-white h-4 w-4 fill-current">

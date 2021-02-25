@@ -29,5 +29,10 @@ class RoleUser extends Model
     {
         return $this->hasOne(Contractors::class);
     }
+
+    public function Technicians()
+    {
+        return $this->belongsTo(Technicians::class);
+    }
 }    
 

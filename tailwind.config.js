@@ -66,6 +66,7 @@ module.exports = {
     variants: {
         extend: {
             opacity: ['disabled'],
+            transitionProperty: ['hover', 'focus'],
         },
     },
 

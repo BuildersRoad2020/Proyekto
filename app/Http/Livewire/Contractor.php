@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Contractors;
+use App\Models\Technicians;
 use App\Models\ContractorDetails;
 use Livewire\WithPagination;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -65,7 +66,10 @@ class Contractor extends Component
 
     public function DeleteContractor(Contractors $id)
     {
-       
+        $Technician = $id->Technicians()->count();
+        if ($Technician != null) {
+            $id->Technicians()->delete();
+        }
         $id->ContractorDetails()->delete();
         $id->delete();
         $this->confirmingContractorDeletion = false;
