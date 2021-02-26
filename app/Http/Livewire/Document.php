@@ -7,14 +7,18 @@ use App\Models\Documents;
 use App\Models\Documents_Category;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+
 
 class Document extends Component
 {
     //use AuthorizesRequests;
     use WithPagination;
+    use WithFileUploads;
     public $documents__category_id;
     public $required;
     public $name;
+    public $file_path;
     public $confirm = false;
     public $confirmEdit = false;
     public $confirmDelete = false;
@@ -41,19 +45,30 @@ class Document extends Component
     }
 
     public function DocumentAdd() {
+    
         $validatedData = $this->validate([
             'name' => ['required', 'string', 'max:60'],
             'documents__category_id' => ['required'],
-            'required' => ['nullable']
+            'required' => ['required'],
+            'file_path' => ['nullable', 'mimes:pdf', 'max:2000'],
         ]);
         $new = new Documents;
+
+        if ($validatedData['file_path'] != null ) {
+            $File = $validatedData['file_path'];
+            $FileName = $validatedData['name'] . '_' . time() . '_' . '.' . $File->getClientOriginalExtension();
+            $FilePath =  '/public/documents';
+            $validatedData['file_path']->storeAs($FilePath, $FileName);
+            $new->file_path = $FileName;
+        }
+
         $new->name = $validatedData['name'];
         $new->documents__category_id = $validatedData['documents__category_id'];
         $new->required = $validatedData['required'];
         $new->save();
 
         $this->confirm = false;
-        session()->flash('message', 'Skills have been added');
+        session()->flash('message', 'Document added');
     }
         //Edit Document
     public function confirmDocumentEdit(Documents $id) {

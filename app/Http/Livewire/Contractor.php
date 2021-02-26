@@ -60,7 +60,7 @@ class Contractor extends Component
 
     public function confirmContractorDeletion($id)
     {
-
+      
         $this->confirmingContractorDeletion = $id;
         // $id->ContractorDetails()->delete();
         // $id->delete();

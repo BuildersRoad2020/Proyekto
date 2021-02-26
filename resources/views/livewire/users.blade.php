@@ -2,8 +2,9 @@
 
 <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
 @if(session()->has('message')) 
-    <div class="bg-white text-right py-4 lg:px-4 rounded animate-fade-in-down" wire:poll.5000ms>
-        <div class="p-2 bg-green-500 items-center text-green-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+<div class="fixed top-0 right-0 bg-opacity-0 ">
+    <div class="text-right py-4 lg:px-4 rounded animate-fade-in-down" wire:poll.5000ms>
+        <div class="p-2 bg-green-500 items-center bg-opacity-75 text-green-100 leading-none rounded-full lg:rounded-full flex lg:inline-flex" role="alert">
             <span class="flex rounded-full bg-green-200 uppercase px-2 py-1 text-xs font-bold mr-3">
                 <svg class="h-8 w-8 text-white fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path d="M468.907 214.604c-11.423 0-20.682 9.26-20.682 20.682v20.831c-.031 54.338-21.221 105.412-59.666 143.812-38.417 38.372-89.467 59.5-143.761 59.5h-.12C132.506 459.365 41.3 368.056 41.364 255.883c.031-54.337 21.221-105.411 59.667-143.813 38.417-38.372 89.468-59.5 143.761-59.5h.12c28.672.016 56.49 5.942 82.68 17.611 10.436 4.65 22.659-.041 27.309-10.474 4.648-10.433-.04-22.659-10.474-27.309-31.516-14.043-64.989-21.173-99.492-21.192h-.144c-65.329 0-126.767 25.428-172.993 71.6C25.536 129.014.038 190.473 0 255.861c-.037 65.386 25.389 126.874 71.599 173.136 46.21 46.262 107.668 71.76 173.055 71.798h.144c65.329 0 126.767-25.427 172.993-71.6 46.262-46.209 71.76-107.668 71.798-173.066v-20.842c0-11.423-9.259-20.683-20.682-20.683z" />
@@ -12,6 +13,7 @@
             </span>
             <span class="font-semibold mr-2 text-left flex-auto"> {{ session('message') }} </span>
         </div>
+    </div> 
     </div>   
 @endif
 

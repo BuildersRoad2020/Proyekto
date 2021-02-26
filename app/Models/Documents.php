@@ -11,6 +11,7 @@ class Documents extends Model
 
     protected $fillable = [
         'name',
+        'file_path',
         'required'
     ];
 

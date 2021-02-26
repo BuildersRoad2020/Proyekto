@@ -95,7 +95,7 @@ class Technician extends Component
 
     public function TechnicianAdd()
     {
-
+        $this->resetPage();
         $validatedData = $this->validate(
             [
                 'name' => ['required', 'string', 'max:255'],

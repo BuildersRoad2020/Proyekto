@@ -16,7 +16,8 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('required')->default(0);
+            $table->boolean('required')->default(0)->nullable();
+            $table->string('file_path')->nullable();
             $table->foreignId('documents__category_id')->references('id')->on('documents__categories')->cacascadeOnDelete();     
             $table->timestamps();
         });

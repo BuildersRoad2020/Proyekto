@@ -34,6 +34,7 @@ class ContractorSkills extends Component
     public function AddSkill() {
 
         $this->authorize('adminvendor', App\Policies\Users::class);
+        $this->resetPage();
         $validatedData = $this->validate(
             [
                 'skills_id' => 'required',

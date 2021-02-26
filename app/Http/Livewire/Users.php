@@ -63,7 +63,7 @@ class Users extends Component
 
     public function UserAdd()
     {
-
+        $this->resetPage();
         $password =  STR::random(10);
         $validatedData = $this->validate(
             [
@@ -181,18 +181,22 @@ class Users extends Component
             $query = Contractors::find($Contractordetails)->first()->delete();    //to Delete from Contractors Table
             $id->delete();
             $this->confirmingUserDelete = false;
-        } else if ($Contractor === null) {
+        } /* else if ($Contractor === null) {
+            $id->RoleUser()->delete();
             $id->delete();
             $this->confirmingUserDelete = false;
-        }
+        } */
 
         $Technician = $id->RoleUser()->where('role_id', 3)->pluck('id')->first();
 
         if ($Technician !== null) {
             $find = Technicians::where('role_users_id',$Technician );
             $find->delete();
+            $this->confirmingUserDelete = false;
         }
 
+        $id->delete();
+        $this->confirmingUserDelete = false;
         session()->flash('message', 'User has been deleted');
     }
 

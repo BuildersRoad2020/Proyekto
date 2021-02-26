@@ -24,6 +24,7 @@ class DocumentCategory extends Component
 
     public function AddDocument() {
 
+    
         $this->validate([
             'name' => ['required', 'string', 'max:60'],
         ]);
