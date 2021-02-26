@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Contractors;
 use App\Models\Technicians;
+use App\Models\RoleUser;
+use App\Models\User;
 use App\Models\ContractorDetails;
 use Livewire\WithPagination;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -66,12 +68,18 @@ class Contractor extends Component
 
     public function DeleteContractor(Contractors $id)
     {
+        $RoleUser = RoleUser::where('id', $id->role_user_id)->first();
+       // dd($RoleUser);
+        $User = User::where('id', $RoleUser->user_id)->first();
         $Technician = $id->Technicians()->count();
         if ($Technician != null) {
             $id->Technicians()->delete();
         }
         $id->ContractorDetails()->delete();
+        $id->ContractorSkills()->delete();
         $id->delete();
+        $RoleUser->delete();
+        $User->delete();
         $this->confirmingContractorDeletion = false;
         session()->flash('message', 'Contractor has been removed');
     }

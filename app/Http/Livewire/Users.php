@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Contractors;
 use App\Models\ContractorDetails;
+use App\Models\ContractorSkills;
 use App\Models\RoleUser;
 use App\Models\Roles;
 use App\Models\Technicians;
@@ -63,10 +64,28 @@ class Users extends Component
     public function UserAdd()
     {
 
-        $invalid = array('1', '3');
-        $invalid2 = array('3');
+        $password =  STR::random(10);
+        $validatedData = $this->validate(
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'role_id' => ['required', function ($attribute, $value, $fail){
+                    if ($value == array(1,3)) {
+                        $fail('Cannot add Technician Role without a contractor');
+                    }
+                    else if ($value == array(3)) {
+                        $fail('Cannot add Technician Role without a contractor');
+                    }
+                }]
+            ],
+            [
+                'name.required' => 'Please enter a name',
+                'email.required' => 'Please enter an email address',
+                'role_id.required' => 'Please select at least one role'
+            ]
+        );
 
-        if ($this->role_id == $invalid2) {
+ /*        if ($this->role_id == $invalid2) {
             $this->confirmingUserAdd = false;
             session()->flash('error', 'Cannot add tech without a vendor');
         }
@@ -74,26 +93,7 @@ class Users extends Component
         if ($this->role_id == $invalid) {
             $this->confirmingUserAdd = false;
             session()->flash('error', 'Cannot add tech');
-        }
-
-        $password =  STR::random(10);
-        $validatedData = $this->validate(
-            [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'role_id' => ['required']
-            ],
-            [
-                'name.required' => 'Please enter a name',
-                'email.required' => 'Please enter an email address',
-                // 'role_id.required' => 'Please select at least one role'
-            ]
-        );
-
-        if ($validatedData['role_id'] == $invalid2) {
-            $this->confirmingUserAdd = false;
-            session()->flash('message', 'Invalid Roles');
-        }
+        } */
 
 
         $user = new User;
@@ -156,20 +156,23 @@ class Users extends Component
 
     public function DeleteUser(User $id)
     {
-        //to delete from ContractorDetails Table
-        //$user = 
+ 
         $Contractor = $id->RoleUser()->where('role_id', 2)->pluck('id')->first();
 
-        // dd($Contractor);
-        // dd($Contractor);
         if ($Contractor !== null) {
 
             $Contractordetails = Contractors::where('role_user_id', $Contractor)->pluck('id');
             $find = ContractorDetails::where('contractors_id', $Contractordetails);
             $find->delete();
 
-            $Technician = Technicians::where('contractors_id', $Contractordetails)->pluck('id'); //to delete from Technicians Table
+            $skills = ContractorSkills::where('contractors_id', $Contractordetails)->pluck('id');
+            if ($skills !== null) {
+                foreach ($skills as $key => $value) {
+                    ContractorSkills::find($value)->delete();
+                }
+            }
 
+            $Technician = Technicians::where('contractors_id', $Contractordetails)->pluck('id'); //to delete from Technicians Table
             if ($Technician !== null) {
                 foreach ($Technician as $key => $value) {
                     Technicians::find($value)->delete();
@@ -182,6 +185,14 @@ class Users extends Component
             $id->delete();
             $this->confirmingUserDelete = false;
         }
+
+        $Technician = $id->RoleUser()->where('role_id', 3)->pluck('id')->first();
+
+        if ($Technician !== null) {
+            $find = Technicians::where('role_users_id',$Technician );
+            $find->delete();
+        }
+
         session()->flash('message', 'User has been deleted');
     }
 

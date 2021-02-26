@@ -135,9 +135,9 @@ class Technician extends Component
 
     public function DeleteTechnician(Technicians $id)
     {
-        $RoleUser = RoleUser::where('id',$id->role_users_id)->where('role_id', 3)->first();
-        $deleteTechnician = $id->delete();
-        $RoleUser->delete();
+       $RoleUser = RoleUser::where('id',$id->role_users_id)->where('role_id', 3)->first();
+       $deleteTechnician = $id->delete(); 
+       $RoleUser->delete();
         $this->confirmingTechnicianDelete = false;
         session()->flash('message', 'Technician has been removed');
     }

@@ -25,10 +25,10 @@ class ContractorDetailsFactory extends Factory
         return [
             'contractors_id' => Contractors::factory(),
             'address' => $this->faker->streetAddress,
-            'city' => $this->faker->city,
+            'city' => mt_rand(30,60),
             'postcode' => $this->faker->postcode,
-            'state' =>  $this->faker->state,
-            'country' => $this->faker->country,
+            'state' =>  mt_rand(1,60),
+            'country' => 1,
             'abn' => mt_rand(600000, 700000),
             'name_primarycontact' => $this->faker->name,
             'phone_primary' => $this->faker->tollFreePhoneNumber,

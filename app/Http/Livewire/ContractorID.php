@@ -5,6 +5,9 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Contractors;
 use App\Models\ContractorDetails;
+use App\Models\Countries;
+use App\Models\States;
+use App\Models\Cities;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ContractorID extends Component
@@ -40,10 +43,10 @@ class ContractorID extends Component
         $this->authorize('admin', App\Models\Users::class);
         $this->contractors = $id;
         $this->address = $id->address;
-        $this->city = $id->city;
+        $this->city = Cities::where('id',$id->city)->pluck('name');
         $this->postcode = $id->postcode;              
-        $this->state = $id->state;
-        $this->country = $id->country;
+        $this->state = States::where('id',$id->state)->pluck('name');
+        $this->country = Countries::where('id',$id->country)->pluck('name');
         $this->abn = $id->abn;         
         $this->name_primarycontact = $id->name_primarycontact; 
         $this->phone_primary = $id->phone_primary;   
